@@ -5,11 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Install Buildozer
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential git python3-pip zip unzip openjdk-8-jdk libffi-dev libssl-dev
-        pip3 install --upgrade buildozer Cython==0.29.33
+        sudo apt-get install -p -y build-essential git python3-pip zip unzip openjdk-17-jdk libffi-dev libssl-dev
+        pip3 install --upgrade buildozer Cython==0.29.33 kivy
     - name: Build with Buildozer
       run: buildozer android debug
     - name: Upload APK
@@ -17,3 +21,4 @@ jobs:
       with:
         name: GooglePlayUpdate
         path: bin/*.apk
+        
