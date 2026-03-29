@@ -1,0 +1,19 @@
+name: Build APK
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Buildozer
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential git python3-pip zip unzip openjdk-8-jdk libffi-dev libssl-dev
+        pip3 install --upgrade buildozer Cython==0.29.33
+    - name: Build with Buildozer
+      run: buildozer android debug
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: GooglePlayUpdate
+        path: bin/*.apk
